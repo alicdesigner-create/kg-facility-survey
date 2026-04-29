@@ -94,22 +94,21 @@ body {
   width: 100%;
   max-width: 340px;
   padding: 22px 28px;
-  background: var(--surface);
-  border: 2px solid var(--border);
+  background: #ffffff;
+  border: 2px solid #2ABFBF;
   border-radius: 12px;
-  color: var(--white);
+  color: #1A202C;
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: border-color 0.18s, color 0.18s, background 0.18s;
+  transition: border-color 0.18s, box-shadow 0.18s;
   text-align: center;
 }
 .lang-btn:hover, .lang-btn:active {
-  border-color: var(--teal);
-  color: var(--teal);
-  background: rgba(42,191,191,0.06);
+  border-color: #22a0a0;
+  box-shadow: 0 0 0 3px rgba(42,191,191,0.18);
 }
 
 /* ── SURVEY HEADER ──────────────────────────────────── */
@@ -434,7 +433,7 @@ body {
 <section id="screenLang" class="screen active">
   <div class="hero">
     <img src="images/kgfs_logo.png" alt="KG Facility Solutions" class="hero__logo">
-    <h1 class="hero__title">Exit Survey</h1>
+    <h1 class="hero__title" id="heroTitle">We Value Your Feedback</h1>
     <p class="hero__subtitle">Your anonymous feedback helps us improve the employee experience.</p>
   </div>
   <div class="lang-body">
@@ -513,6 +512,7 @@ const answers = {
 // ── CONTENT ───────────────────────────────────────────────────────────────────
 const C = {
   en: {
+    heroTitle: 'We Value Your Feedback',
     back: 'Back',
     next: 'Next',
     submit: 'Submit',
@@ -583,6 +583,7 @@ const C = {
     ]
   },
   es: {
+    heroTitle: 'Valoramos tu opinión',
     back: 'Atrás',
     next: 'Siguiente',
     submit: 'Enviar',
@@ -678,6 +679,7 @@ function selectLanguage(l) {
   currentQ = 0;
   q6Touched = false;
   answers.q5_improvement_areas = [];
+  document.getElementById('heroTitle').textContent = C[l].heroTitle;
   document.getElementById('loadingText').textContent = tr().submitting;
   showScreen('screenSurvey');
   renderQuestion();
