@@ -6,34 +6,38 @@
 <title>KG Facility Solutions — Exit Survey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ── ROOT ───────────────────────────────────────────── */
 :root {
-  --bg: #0d0d0d;
-  --surface: #181818;
-  --teal: #2ABFBF;
-  --teal-hover: #22a0a0;
-  --white: #ffffff;
-  --gray: #888888;
-  --gray-light: #cccccc;
-  --gray-dark: #555555;
-  --border: #2e2e2e;
-  --error: #ff5a5a;
+  --dark:        #0a0f1a;
+  --dark-hero:   #0d1f1f;
+  --teal:        #2ABFBF;
+  --teal-hover:  #22a0a0;
+  --teal-glow:   rgba(42,191,191,0.18);
+  --teal-soft:   rgba(42,191,191,0.10);
+  --white:       #ffffff;
+  --light-bg:    #f4f6f9;
+  --dark-text:   #1A202C;
+  --body-text:   #4A5568;
+  --gray:        #718096;
+  --border:      #E2E8F0;
+  --input-bg:    #F7FAFC;
+  --error:       #E53E3E;
+  --shadow-sm:   0 1px 4px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:   0 4px 18px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
+  --shadow-teal: 0 4px 16px rgba(42,191,191,0.22);
 }
 
 *, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  box-sizing: border-box; margin: 0; padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--bg);
-  color: var(--white);
   font-family: 'Barlow', sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
+  background: var(--light-bg);
+  color: var(--dark-text);
   min-height: 100dvh;
   overflow-x: hidden;
 }
@@ -42,88 +46,230 @@ body {
 .screen { display: none; min-height: 100dvh; flex-direction: column; }
 .screen.active { display: flex; }
 
-/* ── HERO ───────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════
+   LANGUAGE SCREEN
+════════════════════════════════════════════════════ */
+
+/* ── HERO ZONE (dark) ───────────────────────────────── */
 .hero {
-  padding: 36px 24px 28px;
+  background: linear-gradient(160deg, var(--dark) 0%, var(--dark-hero) 100%);
+  padding: 48px 24px 20px;
   text-align: center;
-  border-bottom: 1px solid var(--border);
-}
-.hero__logo {
-  max-width: 160px;
-  height: auto;
-  display: block;
-  margin: 0 auto 24px;
-}
-.hero__title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 2.2rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  line-height: 1.1;
-}
-.hero__subtitle {
-  margin-top: 10px;
-  font-size: 0.88rem;
-  color: var(--gray);
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
+  position: relative;
+  overflow: hidden;
 }
 
-/* ── LANGUAGE SCREEN ────────────────────────────────── */
+/* radial glow */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  height: 320px;
+  background: radial-gradient(ellipse, rgba(42,191,191,0.16) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* subtle grid texture */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 39px, rgba(42,191,191,0.025) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(42,191,191,0.025) 40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__logo {
+  width: 120px;
+  height: auto;
+  display: block;
+  margin: 0 auto 22px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 20px rgba(42,191,191,0.22));
+}
+
+.hero__title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+
+.title-white { color: #ffffff; }
+.title-teal  { color: var(--teal); }
+
+.hero__subtitle {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 290px;
+  margin: 0 auto;
+  line-height: 1.65;
+  position: relative;
+  z-index: 1;
+  font-weight: 300;
+}
+
+/* ── WAVE DIVIDER ───────────────────────────────────── */
+.wave-divider {
+  background: linear-gradient(160deg, var(--dark) 0%, var(--dark-hero) 100%);
+  line-height: 0;
+  margin-top: -1px;
+}
+.wave-divider svg { display: block; width: 100%; height: auto; }
+
+/* ── LANGUAGE BODY (light) ──────────────────────────── */
 .lang-body {
   flex: 1;
+  background: var(--light-bg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 32px 24px 52px;
-  gap: 14px;
+  padding: 28px 20px 44px;
+  gap: 16px;
 }
-.lang-prompt {
+
+.lang-globe-wrap {
+  width: 52px;
+  height: 52px;
+  background: var(--teal-soft);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.lang-label-group { text-align: center; margin-bottom: 2px; }
+.lang-label-primary {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dark-text);
+}
+.lang-label-secondary {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.76rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gray);
-  margin-bottom: 6px;
+  margin-top: 3px;
 }
+
+/* Language buttons — app list row style */
 .lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   width: 100%;
-  max-width: 340px;
-  padding: 22px 28px;
-  background: #ffffff;
-  border: 2px solid #2ABFBF;
-  border-radius: 12px;
-  color: #1A202C;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  max-width: 370px;
+  padding: 15px 18px 15px 14px;
+  background: var(--white);
+  border: none;
+  border-left: 4px solid var(--teal);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
   cursor: pointer;
-  transition: border-color 0.18s, box-shadow 0.18s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-align: left;
+}
+.lang-btn:hover { box-shadow: 0 6px 22px rgba(42,191,191,0.18), 0 2px 6px rgba(0,0,0,0.07); }
+.lang-btn:active { transform: scale(0.97); }
+
+.lang-btn-icon-wrap {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  background: var(--teal-soft);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-btn-label { flex: 1; }
+.lang-btn-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  display: block;
+  line-height: 1.2;
+}
+.lang-btn-sub {
+  font-size: 0.76rem;
+  color: var(--gray);
+  font-weight: 400;
+}
+
+.lang-btn-chevron {
+  flex-shrink: 0;
+  color: var(--teal);
+}
+
+/* Trust badge */
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--white);
+  border: 1px solid rgba(42,191,191,0.2);
+  border-radius: 12px;
+  max-width: 370px;
+  width: 100%;
+  box-shadow: var(--shadow-sm);
+  margin-top: 4px;
+}
+.trust-badge-icon { flex-shrink: 0; opacity: 0.75; }
+.trust-badge-text {
+  flex: 1;
+  font-size: 0.76rem;
+  color: var(--gray);
+  line-height: 1.45;
   text-align: center;
 }
-.lang-btn:hover, .lang-btn:active {
-  border-color: #22a0a0;
-  box-shadow: 0 0 0 3px rgba(42,191,191,0.18);
-}
+
+/* ════════════════════════════════════════════════════
+   SURVEY SCREEN
+════════════════════════════════════════════════════ */
+#screenSurvey  { background: var(--light-bg); }
+#screenSuccess { background: var(--light-bg); }
 
 /* ── SURVEY HEADER ──────────────────────────────────── */
 .survey-header {
-  padding: 20px 24px 0;
-  flex-shrink: 0;
+  background: var(--white);
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.survey-header__inner {
   max-width: 560px;
-  width: 100%;
   margin: 0 auto;
 }
+
 .progress-meta {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
 }
+
 .progress-label {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 0.72rem;
@@ -131,8 +277,10 @@ body {
   text-transform: uppercase;
   color: var(--gray);
 }
+.progress-label--teal { color: var(--teal); font-weight: 600; }
+
 .progress-track {
-  height: 3px;
+  height: 4px;
   background: var(--border);
   border-radius: 2px;
 }
@@ -141,29 +289,42 @@ body {
   background: var(--teal);
   border-radius: 2px;
   transition: width 0.35s ease;
+  box-shadow: 0 0 6px rgba(42,191,191,0.4);
 }
 
 /* ── QUESTION BODY ──────────────────────────────────── */
 .question-body {
   flex: 1;
-  padding: 28px 24px 130px;
+  padding: 24px 20px 130px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 18px;
   max-width: 560px;
   width: 100%;
   margin: 0 auto;
 }
+
+.question-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
 .question-text {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.42rem;
+  font-size: 1.45rem;
   font-weight: 600;
   line-height: 1.32;
+  color: var(--dark-text);
 }
+
 .scale-descriptor {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--gray);
-  margin-top: -14px;
+  margin-top: -10px;
 }
 
 /* ── SCALE BUTTONS ──────────────────────────────────── */
@@ -172,128 +333,148 @@ body {
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 }
+
 .scale-btn {
   aspect-ratio: 1;
   min-height: 52px;
-  background: var(--surface);
-  border: 2px solid var(--border);
+  background: var(--white);
+  border: 1.5px solid var(--border);
   border-radius: 10px;
-  color: var(--white);
+  color: var(--body-text);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
 }
-.scale-btn:hover { border-color: var(--teal); }
+.scale-btn:hover { border-color: var(--teal); color: var(--teal); }
 .scale-btn.selected {
   background: var(--teal);
   border-color: var(--teal);
-  color: #0d0d0d;
+  color: var(--white);
   font-weight: 700;
+  box-shadow: var(--shadow-teal);
 }
 
-/* ── OPTION BUTTONS ─────────────────────────────────── */
+/* ── OPTION BUTTONS (Yes / No / Maybe) ─────────────── */
 .option-list { display: flex; flex-direction: column; gap: 10px; }
+
 .option-btn {
   width: 100%;
-  padding: 18px 20px;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  color: var(--white);
+  padding: 16px 22px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  color: var(--body-text);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
 }
-.option-btn:hover { border-color: var(--teal); }
+.option-btn:hover { border-color: var(--teal); color: var(--teal); }
 .option-btn.selected {
   background: var(--teal);
   border-color: var(--teal);
-  color: #0d0d0d;
+  color: var(--white);
   font-weight: 700;
+  box-shadow: var(--shadow-teal);
 }
 
 /* ── CHECKBOXES ─────────────────────────────────────── */
 .checkbox-list { display: flex; flex-direction: column; gap: 10px; }
+
 .checkbox-row {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 15px 16px;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
   user-select: none;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
 }
 .checkbox-row:hover { border-color: var(--teal); }
 .checkbox-row.checked {
   border-color: var(--teal);
-  background: rgba(42,191,191,0.07);
+  background: rgba(42,191,191,0.04);
+  box-shadow: 0 2px 10px rgba(42,191,191,0.12);
 }
+
 .checkbox-box {
   width: 22px;
   height: 22px;
   flex-shrink: 0;
-  border: 2px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--white);
   transition: background 0.15s, border-color 0.15s;
 }
 .checkbox-row.checked .checkbox-box {
   background: var(--teal);
   border-color: var(--teal);
 }
+
 .check-icon { display: none; }
 .checkbox-row.checked .check-icon { display: block; }
+
 .checkbox-text {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.1rem;
   font-weight: 500;
+  color: var(--dark-text);
 }
 
-/* ── FIELDS ─────────────────────────────────────────── */
+/* ── TEXT FIELDS ────────────────────────────────────── */
 .field-label {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--gray);
-  margin-bottom: -14px;
+  margin-bottom: -12px;
+  font-weight: 500;
 }
+
 .comment-field {
   width: 100%;
-  background: var(--surface);
-  border: 2px solid var(--border);
+  background: var(--white);
+  border: 1.5px solid var(--border);
   border-radius: 10px;
-  color: var(--white);
+  color: var(--dark-text);
   font-family: 'Barlow', sans-serif;
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.55;
   padding: 14px 16px;
   resize: vertical;
   min-height: 88px;
   outline: none;
-  transition: border-color 0.15s;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-.comment-field:focus { border-color: var(--teal); }
-.comment-field::placeholder { color: var(--gray-dark); }
+.comment-field:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(42,191,191,0.14);
+}
+.comment-field::placeholder { color: #A0AEC0; }
 .textarea-lg { min-height: 150px; }
 
 /* ── ERROR ──────────────────────────────────────────── */
 .error-msg {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--error);
   display: none;
   margin-top: -10px;
+  font-weight: 500;
 }
 .error-msg.visible { display: block; }
 
@@ -306,14 +487,15 @@ body {
   display: flex;
   gap: 12px;
   padding: 14px 20px;
-  background: var(--bg);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-top: 1px solid var(--border);
   z-index: 50;
-  max-width: 560px;
-  margin: 0 auto;
 }
 @media (min-width: 560px) {
   .nav-footer {
+    max-width: 560px;
     left: 50%;
     right: auto;
     width: 560px;
@@ -322,10 +504,11 @@ body {
     border-right: 1px solid var(--border);
   }
 }
+
 .btn-back {
   padding: 14px 18px;
-  background: transparent;
-  border: 2px solid var(--border);
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
   border-radius: 10px;
   color: var(--gray);
   font-family: 'Barlow Condensed', sans-serif;
@@ -334,33 +517,39 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s;
   white-space: nowrap;
 }
-.btn-back:hover { border-color: var(--gray); color: var(--white); }
+.btn-back:hover { background: var(--border); color: var(--body-text); }
+
 .btn-next {
   flex: 1;
   padding: 16px 20px;
   background: var(--teal);
   border: none;
   border-radius: 10px;
-  color: #0d0d0d;
+  color: var(--dark);
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.15s;
+  box-shadow: var(--shadow-teal);
+  transition: background 0.15s, box-shadow 0.15s;
 }
 .btn-next:hover { background: var(--teal-hover); }
 
-/* ── LOADING ────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════
+   LOADING OVERLAY
+════════════════════════════════════════════════════ */
 .loading-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(13,13,13,0.88);
+  background: rgba(244,246,249,0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 100;
   flex-direction: column;
   align-items: center;
@@ -368,9 +557,10 @@ body {
   gap: 18px;
 }
 .loading-overlay.visible { display: flex; }
+
 .spinner {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border: 3px solid var(--border);
   border-top-color: var(--teal);
   border-radius: 50%;
@@ -378,102 +568,249 @@ body {
 }
 .loading-text {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  color: var(--gray);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--gray);
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── SUCCESS ────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════
+   SUCCESS SCREEN
+════════════════════════════════════════════════════ */
 .success-body {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 28px;
+  padding: 48px 28px;
   text-align: center;
   gap: 22px;
 }
-.success-icon {
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-  border: 2px solid var(--teal);
-  background: rgba(42,191,191,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+.success-anim-wrap {
+  width: 100px;
+  height: 100px;
 }
+
+/* Circle stroke animation */
+.success-circle {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2.5;
+  stroke-dasharray: 264;
+  stroke-dashoffset: 264;
+  transform-origin: 50% 50%;
+  transform: rotate(-90deg);
+  animation: drawCircle 0.65s cubic-bezier(0.4,0,0.2,1) 0.1s forwards;
+}
+@keyframes drawCircle { to { stroke-dashoffset: 0; } }
+
+/* Check stroke animation */
+.success-check {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 52;
+  stroke-dashoffset: 52;
+  animation: drawCheck 0.4s cubic-bezier(0.4,0,0.2,1) 0.65s forwards;
+}
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+/* Circle fill that fades in */
+.success-circle-fill {
+  fill: rgba(42,191,191,0.08);
+  opacity: 0;
+  animation: fadeInFill 0.3s ease 0.6s forwards;
+}
+@keyframes fadeInFill { to { opacity: 1; } }
+
 .success-title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  color: var(--teal);
 }
 .success-msg {
   font-size: 0.95rem;
-  color: var(--gray-light);
-  line-height: 1.65;
+  color: var(--gray);
+  line-height: 1.7;
   max-width: 300px;
+}
+.success-logo {
+  width: 90px;
+  height: auto;
+  opacity: 0.45;
+  margin-top: 10px;
+  filter: grayscale(1);
 }
 </style>
 </head>
 <body>
 
-<!-- Loading overlay -->
+<!-- ── Loading overlay ────────────────────────────────── -->
 <div id="loadingOverlay" class="loading-overlay">
   <div class="spinner"></div>
   <p class="loading-text" id="loadingText">Submitting...</p>
 </div>
 
-<!-- ─── SCREEN: LANGUAGE ──────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════
+     SCREEN 1 — LANGUAGE
+════════════════════════════════════════════════════ -->
 <section id="screenLang" class="screen active">
+
+  <!-- Dark hero zone -->
   <div class="hero">
     <img src="images/kgfs_logo.png" alt="KG Facility Solutions" class="hero__logo">
-    <h1 class="hero__title" id="heroTitle">We Value Your Feedback</h1>
-    <p class="hero__subtitle">Your anonymous feedback helps us improve the employee experience.</p>
+    <h1 class="hero__title">
+      <span class="title-white" id="titleFirst">We</span>
+      <span class="title-teal"  id="titleRest"> Value Your Feedback</span>
+    </h1>
+    <p class="hero__subtitle" id="heroSubtitle">
+      Your anonymous feedback helps us improve the employee experience.
+    </p>
   </div>
+
+  <!-- Wave divider: dark → light -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,32 C240,68 520,0 720,36 C920,72 1200,4 1440,32 L1440,64 L0,64 Z" fill="#f4f6f9"/>
+    </svg>
+  </div>
+
+  <!-- Light language selector zone -->
   <div class="lang-body">
-    <p class="lang-prompt">Select your language &nbsp;/&nbsp; Selecciona tu idioma</p>
-    <button class="lang-btn" onclick="selectLanguage('en')">English</button>
-    <button class="lang-btn" onclick="selectLanguage('es')">Español</button>
+
+    <!-- Globe icon -->
+    <div class="lang-globe-wrap">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="#2ABFBF" stroke-width="1.7"/>
+        <path d="M12 2C9.5 5 8 8.3 8 12s1.5 7 4 10M12 2c2.5 3 4 6.3 4 10s-1.5 7-4 10" stroke="#2ABFBF" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="M2.5 12h19M3 8h18M3 16h18" stroke="#2ABFBF" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Label -->
+    <div class="lang-label-group">
+      <p class="lang-label-primary">Select your language</p>
+      <p class="lang-label-secondary">Selecciona tu idioma</p>
+    </div>
+
+    <!-- English button -->
+    <button class="lang-btn" onclick="selectLanguage('en')">
+      <div class="lang-btn-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#2ABFBF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="lang-btn-label">
+        <span class="lang-btn-name">English</span>
+        <span class="lang-btn-sub">Continue in English</span>
+      </div>
+      <div class="lang-btn-chevron">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18l6-6-6-6" stroke="#2ABFBF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </button>
+
+    <!-- Español button -->
+    <button class="lang-btn" onclick="selectLanguage('es')">
+      <div class="lang-btn-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#2ABFBF" stroke-width="1.8"/>
+          <path d="M12 2C9.5 5 8 8.3 8 12s1.5 7 4 10M12 2c2.5 3 4 6.3 4 10s-1.5 7-4 10" stroke="#2ABFBF" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M2.5 12h19" stroke="#2ABFBF" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="lang-btn-label">
+        <span class="lang-btn-name">Español</span>
+        <span class="lang-btn-sub">Continuar en Español</span>
+      </div>
+      <div class="lang-btn-chevron">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18l6-6-6-6" stroke="#2ABFBF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </button>
+
+    <!-- Trust badge -->
+    <div class="trust-badge">
+      <div class="trust-badge-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#2ABFBF" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M9 12l2 2 4-4" stroke="#2ABFBF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="trust-badge-text" id="trustText">
+        Your responses are 100% anonymous and confidential.
+      </p>
+      <div class="trust-badge-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="11" width="18" height="11" rx="2" stroke="#2ABFBF" stroke-width="1.8"/>
+          <path d="M7 11V7a5 5 0 0110 0v4" stroke="#2ABFBF" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- ─── SCREEN: SURVEY ────────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════
+     SCREEN 2 — SURVEY
+════════════════════════════════════════════════════ -->
 <section id="screenSurvey" class="screen">
+
+  <!-- Sticky progress header -->
   <div class="survey-header">
-    <div class="progress-meta">
-      <span class="progress-label" id="progressLabel">Question 1 of 8</span>
-      <span class="progress-label" id="progressPct">0%</span>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    <div class="survey-header__inner">
+      <div class="progress-meta">
+        <span class="progress-label" id="progressLabel">Question 1 of 8</span>
+        <span class="progress-label progress-label--teal" id="progressPct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
     </div>
   </div>
+
+  <!-- Dynamically rendered question -->
   <div class="question-body" id="questionBody"></div>
+
+  <!-- Fixed nav -->
   <div class="nav-footer">
     <button id="btnBack" class="btn-back" onclick="goBack()" style="display:none">Back</button>
     <button id="btnNext" class="btn-next" onclick="goNext()">Next</button>
   </div>
+
 </section>
 
-<!-- ─── SCREEN: SUCCESS ───────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════
+     SCREEN 3 — SUCCESS
+════════════════════════════════════════════════════ -->
 <section id="screenSuccess" class="screen">
-  <div class="hero">
-    <img src="images/kgfs_logo.png" alt="KG Facility Solutions" class="hero__logo">
-  </div>
   <div class="success-body">
-    <div class="success-icon">
-      <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
-        <path d="M7 19L15 27L31 11" stroke="#2ABFBF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Animated checkmark -->
+    <div class="success-anim-wrap">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <circle class="success-circle-fill" cx="50" cy="50" r="46"/>
+        <circle class="success-circle" cx="50" cy="50" r="42"/>
+        <path class="success-check" d="M30 50L43 63L70 36"/>
       </svg>
     </div>
+
     <h2 class="success-title" id="successTitle">Thank You!</h2>
-    <p class="success-msg" id="successMsg">Your feedback has been received. We appreciate your honesty and your time with KGFS.</p>
+    <p class="success-msg" id="successMsg">
+      Your feedback has been received. We appreciate your honesty and your time with KGFS.
+    </p>
+    <img src="images/kgfs_logo.png" alt="KG Facility Solutions" class="success-logo">
+
   </div>
 </section>
 
@@ -512,15 +849,19 @@ const answers = {
 // ── CONTENT ───────────────────────────────────────────────────────────────────
 const C = {
   en: {
-    heroTitle: 'We Value Your Feedback',
-    back: 'Back',
-    next: 'Next',
-    submit: 'Submit',
-    submitting: 'Submitting...',
-    required: 'Please answer this question before continuing.',
-    progressOf: (q, t) => `Question ${q} of ${t}`,
+    titleFirst:   'We',
+    titleRest:    ' Value Your Feedback',
+    heroSubtitle: 'Your anonymous feedback helps us improve the employee experience.',
+    trustText:    'Your responses are 100% anonymous and confidential.',
+    questionNum:  (q, t) => `QUESTION ${q} OF ${t}`,
+    back:         'Back',
+    next:         'Next',
+    submit:       'Submit',
+    submitting:   'Submitting...',
+    required:     'Please answer this question before continuing.',
+    progressOf:   (q, t) => `Question ${q} of ${t}`,
     successTitle: 'Thank You!',
-    successMsg: 'Your feedback has been received. We appreciate your honesty and your time with KGFS.',
+    successMsg:   'Your feedback has been received. We appreciate your honesty and your time with KGFS.',
     questions: [
       { // 0 — Q1
         type: 'scale',
@@ -583,15 +924,19 @@ const C = {
     ]
   },
   es: {
-    heroTitle: 'Valoramos tu opinión',
-    back: 'Atrás',
-    next: 'Siguiente',
-    submit: 'Enviar',
-    submitting: 'Enviando...',
-    required: 'Por favor responde esta pregunta antes de continuar.',
-    progressOf: (q, t) => `Pregunta ${q} de ${t}`,
+    titleFirst:   'Valoramos',
+    titleRest:    ' tu opinión',
+    heroSubtitle: 'Tu opinión anónima nos ayuda a mejorar la experiencia del equipo.',
+    trustText:    'Tus respuestas son 100% anónimas y confidenciales.',
+    questionNum:  (q, t) => `PREGUNTA ${q} DE ${t}`,
+    back:         'Atrás',
+    next:         'Siguiente',
+    submit:       'Enviar',
+    submitting:   'Enviando...',
+    required:     'Por favor responde esta pregunta antes de continuar.',
+    progressOf:   (q, t) => `Pregunta ${q} de ${t}`,
     successTitle: '¡Gracias!',
-    successMsg: 'Tu opinión ha sido recibida. Apreciamos tu honestidad y tu tiempo en KGFS.',
+    successMsg:   'Tu opinión ha sido recibida. Apreciamos tu honestidad y tu tiempo en KGFS.',
     questions: [
       { // 0 — Q1
         type: 'scale',
@@ -657,16 +1002,32 @@ const C = {
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function tr() { return C[lang]; }
+
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const scr = document.getElementById(id);
+  scr.classList.add('active');
   window.scrollTo(0, 0);
+  // Reset success animations when showing success screen
+  if (id === 'screenSuccess') {
+    const circle = scr.querySelector('.success-circle');
+    const check  = scr.querySelector('.success-check');
+    const fill   = scr.querySelector('.success-circle-fill');
+    [circle, check, fill].forEach(el => {
+      if (!el) return;
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
+  }
 }
+
 function mk(tag, cls) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
   return e;
 }
+
 function hideError() {
   const e = document.getElementById('qError');
   if (e) e.classList.remove('visible');
@@ -679,8 +1040,12 @@ function selectLanguage(l) {
   currentQ = 0;
   q6Touched = false;
   answers.q5_improvement_areas = [];
-  document.getElementById('heroTitle').textContent = C[l].heroTitle;
-  document.getElementById('loadingText').textContent = tr().submitting;
+  // Update dynamic hero text
+  document.getElementById('titleFirst').textContent   = C[l].titleFirst;
+  document.getElementById('titleRest').textContent    = C[l].titleRest;
+  document.getElementById('heroSubtitle').textContent = C[l].heroSubtitle;
+  document.getElementById('trustText').textContent    = C[l].trustText;
+  document.getElementById('loadingText').textContent  = C[l].submitting;
   showScreen('screenSurvey');
   renderQuestion();
 }
@@ -689,21 +1054,26 @@ function selectLanguage(l) {
 function updateProgress() {
   const pct = Math.round((currentQ / TOTAL_Q) * 100);
   document.getElementById('progressLabel').textContent = tr().progressOf(currentQ + 1, TOTAL_Q);
-  document.getElementById('progressPct').textContent = pct + '%';
-  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent   = pct + '%';
+  document.getElementById('progressFill').style.width  = pct + '%';
 }
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function renderQuestion() {
   updateProgress();
-  const t = tr();
+  const t     = tr();
   const qData = t.questions[currentQ];
-  const body = document.getElementById('questionBody');
+  const body  = document.getElementById('questionBody');
   body.innerHTML = '';
 
   document.getElementById('btnBack').style.display = currentQ > 0 ? 'block' : 'none';
-  document.getElementById('btnBack').textContent = t.back;
-  document.getElementById('btnNext').textContent = currentQ === TOTAL_Q - 1 ? t.submit : t.next;
+  document.getElementById('btnBack').textContent   = t.back;
+  document.getElementById('btnNext').textContent   = currentQ === TOTAL_Q - 1 ? t.submit : t.next;
+
+  // Question number label
+  const numEl = mk('p', 'question-num');
+  numEl.textContent = t.questionNum(currentQ + 1, TOTAL_Q);
+  body.appendChild(numEl);
 
   if (qData.type === 'scale')    renderScale(body, qData);
   if (qData.type === 'checkbox') renderCheckbox(body, qData);
@@ -739,13 +1109,11 @@ function addComment(parent, commentKey, label) {
 
 function renderScale(parent, qData) {
   addQuestionText(parent, qData.text);
-
   if (qData.scale) {
     const d = mk('p', 'scale-descriptor');
     d.textContent = qData.scale;
     parent.appendChild(d);
   }
-
   const row1 = mk('div', 'scale-row');
   const row2 = mk('div', 'scale-row');
   for (let i = 1; i <= 10; i++) {
@@ -768,20 +1136,16 @@ function renderScale(parent, qData) {
 
 function renderCheckbox(parent, qData) {
   addQuestionText(parent, qData.text);
-
   const list = mk('div', 'checkbox-list');
   qData.options.forEach(opt => {
     const row = mk('div', 'checkbox-row');
     if (answers[qData.areasKey].includes(opt)) row.classList.add('checked');
-
     const box = mk('div', 'checkbox-box');
     box.innerHTML = `<svg class="check-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
-      <path d="M2.5 6.5L5.5 9.5L10.5 3.5" stroke="#0d0d0d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2.5 6.5L5.5 9.5L10.5 3.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`;
-
     const label = mk('span', 'checkbox-text');
     label.textContent = opt;
-
     row.appendChild(box);
     row.appendChild(label);
     row.addEventListener('click', () => {
@@ -797,43 +1161,30 @@ function renderCheckbox(parent, qData) {
 
 function renderOption(parent, qData) {
   addQuestionText(parent, qData.text);
-
-  const list = mk('div', 'option-list');
-
-  // Values for each button index
-  const q6Vals = [true, false, null];
-  const q7Vals = ['yes', 'no', 'maybe'];
+  const list    = mk('div', 'option-list');
+  const q6Vals  = [true, false, null];
+  const q7Vals  = ['yes', 'no', 'maybe'];
 
   qData.buttons.forEach((label, idx) => {
     const btn = mk('button', 'option-btn');
     btn.textContent = label;
-
-    // Restore selected state when going back
     if (qData.qKey === 'q6' && q6Touched) {
       if (answers.q6_needed_support === q6Vals[idx]) btn.classList.add('selected');
     } else if (qData.qKey === 'q7') {
       if (answers.q7_platform_usage === q7Vals[idx]) btn.classList.add('selected');
     }
-
     btn.addEventListener('click', () => {
       parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
-      if (qData.qKey === 'q6') {
-        answers.q6_needed_support = q6Vals[idx];
-        q6Touched = true;
-      } else {
-        answers.q7_platform_usage = q7Vals[idx];
-      }
+      if (qData.qKey === 'q6') { answers.q6_needed_support = q6Vals[idx]; q6Touched = true; }
+      else                      { answers.q7_platform_usage = q7Vals[idx]; }
       hideError();
     });
     list.appendChild(btn);
   });
   parent.appendChild(list);
   addError(parent);
-
-  if (qData.commentKey) {
-    addComment(parent, qData.commentKey, qData.commentLabel);
-  }
+  if (qData.commentKey) addComment(parent, qData.commentKey, qData.commentLabel);
 }
 
 function renderTextarea(parent, qData) {
@@ -879,22 +1230,22 @@ async function submitSurvey() {
   document.getElementById('loadingOverlay').classList.add('visible');
 
   const payload = {
-    language:               answers.language,
-    q1_general_experience:  answers.q1_general_experience,
-    q1_comment:             answers.q1_comment  || null,
-    q2_corporate_response:  answers.q2_corporate_response,
-    q2_comment:             answers.q2_comment  || null,
-    q3_training_score:      answers.q3_training_score,
-    q3_comment:             answers.q3_comment  || null,
-    q4_info_access:         answers.q4_info_access,
-    q4_comment:             answers.q4_comment  || null,
-    q5_improvement_areas:   answers.q5_improvement_areas.length ? answers.q5_improvement_areas : null,
-    q5_comment:             answers.q5_comment  || null,
-    q6_needed_support:      q6Touched ? answers.q6_needed_support : null,
-    q6_comment:             answers.q6_comment  || null,
-    q7_platform_usage:      answers.q7_platform_usage || null,
-    q8_leadership_advice:   answers.q8_leadership_advice || null,
-    submitted_at:           new Date().toISOString()
+    language:              answers.language,
+    q1_general_experience: answers.q1_general_experience,
+    q1_comment:            answers.q1_comment  || null,
+    q2_corporate_response: answers.q2_corporate_response,
+    q2_comment:            answers.q2_comment  || null,
+    q3_training_score:     answers.q3_training_score,
+    q3_comment:            answers.q3_comment  || null,
+    q4_info_access:        answers.q4_info_access,
+    q4_comment:            answers.q4_comment  || null,
+    q5_improvement_areas:  answers.q5_improvement_areas.length ? answers.q5_improvement_areas : null,
+    q5_comment:            answers.q5_comment  || null,
+    q6_needed_support:     q6Touched ? answers.q6_needed_support : null,
+    q6_comment:            answers.q6_comment  || null,
+    q7_platform_usage:     answers.q7_platform_usage || null,
+    q8_leadership_advice:  answers.q8_leadership_advice || null,
+    submitted_at:          new Date().toISOString()
   };
 
   try {
