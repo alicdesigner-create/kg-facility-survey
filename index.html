@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KG Facility Solutions — Exit Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d0d;
+  --surface: #181818;
+  --teal: #2ABFBF;
+  --teal-hover: #22a0a0;
+  --white: #ffffff;
+  --gray: #888888;
+  --gray-light: #cccccc;
+  --gray-dark: #555555;
+  --border: #2e2e2e;
+  --error: #ff5a5a;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ── SCREENS ────────────────────────────────────────── */
+.screen { display: none; min-height: 100dvh; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* ── HERO ───────────────────────────────────────────── */
+.hero {
+  padding: 36px 24px 28px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.hero__logo {
+  max-width: 160px;
+  height: auto;
+  display: block;
+  margin: 0 auto 24px;
+}
+.hero__title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.hero__subtitle {
+  margin-top: 10px;
+  font-size: 0.88rem;
+  color: var(--gray);
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* ── LANGUAGE SCREEN ────────────────────────────────── */
+.lang-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px 52px;
+  gap: 14px;
+}
+.lang-prompt {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 6px;
+}
+.lang-btn {
+  width: 100%;
+  max-width: 340px;
+  padding: 22px 28px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+  text-align: center;
+}
+.lang-btn:hover, .lang-btn:active {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: rgba(42,191,191,0.06);
+}
+
+/* ── SURVEY HEADER ──────────────────────────────────── */
+.survey-header {
+  padding: 20px 24px 0;
+  flex-shrink: 0;
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.progress-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.progress-track {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--teal);
+  border-radius: 2px;
+  transition: width 0.35s ease;
+}
+
+/* ── QUESTION BODY ──────────────────────────────────── */
+.question-body {
+  flex: 1;
+  padding: 28px 24px 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+}
+.question-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.42rem;
+  font-weight: 600;
+  line-height: 1.32;
+}
+.scale-descriptor {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-top: -14px;
+}
+
+/* ── SCALE BUTTONS ──────────────────────────────────── */
+.scale-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.scale-btn {
+  aspect-ratio: 1;
+  min-height: 52px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.scale-btn:hover { border-color: var(--teal); }
+.scale-btn.selected {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #0d0d0d;
+  font-weight: 700;
+}
+
+/* ── OPTION BUTTONS ─────────────────────────────────── */
+.option-list { display: flex; flex-direction: column; gap: 10px; }
+.option-btn {
+  width: 100%;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.option-btn:hover { border-color: var(--teal); }
+.option-btn.selected {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #0d0d0d;
+  font-weight: 700;
+}
+
+/* ── CHECKBOXES ─────────────────────────────────────── */
+.checkbox-list { display: flex; flex-direction: column; gap: 10px; }
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 16px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+.checkbox-row:hover { border-color: var(--teal); }
+.checkbox-row.checked {
+  border-color: var(--teal);
+  background: rgba(42,191,191,0.07);
+}
+.checkbox-box {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.checkbox-row.checked .checkbox-box {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.check-icon { display: none; }
+.checkbox-row.checked .check-icon { display: block; }
+.checkbox-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* ── FIELDS ─────────────────────────────────────────── */
+.field-label {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-bottom: -14px;
+}
+.comment-field {
+  width: 100%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 14px 16px;
+  resize: vertical;
+  min-height: 88px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.comment-field:focus { border-color: var(--teal); }
+.comment-field::placeholder { color: var(--gray-dark); }
+.textarea-lg { min-height: 150px; }
+
+/* ── ERROR ──────────────────────────────────────────── */
+.error-msg {
+  font-size: 0.85rem;
+  color: var(--error);
+  display: none;
+  margin-top: -10px;
+}
+.error-msg.visible { display: block; }
+
+/* ── NAV FOOTER ─────────────────────────────────────── */
+.nav-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  z-index: 50;
+  max-width: 560px;
+  margin: 0 auto;
+}
+@media (min-width: 560px) {
+  .nav-footer {
+    left: 50%;
+    right: auto;
+    width: 560px;
+    transform: translateX(-50%);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+}
+.btn-back {
+  padding: 14px 18px;
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--gray);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.btn-back:hover { border-color: var(--gray); color: var(--white); }
+.btn-next {
+  flex: 1;
+  padding: 16px 20px;
+  background: var(--teal);
+  border: none;
+  border-radius: 10px;
+  color: #0d0d0d;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-next:hover { background: var(--teal-hover); }
+
+/* ── LOADING ────────────────────────────────────────── */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(13,13,13,0.88);
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+.loading-overlay.visible { display: flex; }
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--border);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+.loading-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SUCCESS ────────────────────────────────────────── */
+.success-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 28px;
+  text-align: center;
+  gap: 22px;
+}
+.success-icon {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 2px solid var(--teal);
+  background: rgba(42,191,191,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.success-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.success-msg {
+  font-size: 0.95rem;
+  color: var(--gray-light);
+  line-height: 1.65;
+  max-width: 300px;
+}
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <p class="loading-text" id="loadingText">Submitting...</p>
+</div>
+
+<!-- ─── SCREEN: LANGUAGE ──────────────────────────────── -->
+<section id="screenLang" class="screen active">
+  <div class="hero">
+    <img src="images/kgfs_logo.png" alt="KG Facility Solutions" class="hero__logo">
+    <h1 class="hero__title">Exit Survey</h1>
+    <p class="hero__subtitle">Your anonymous feedback helps us improve the employee experience.</p>
+  </div>
+  <div class="lang-body">
+    <p class="lang-prompt">Select your language &nbsp;/&nbsp; Selecciona tu idioma</p>
+    <button class="lang-btn" onclick="selectLanguage('en')">English</button>
+    <button class="lang-btn" onclick="selectLanguage('es')">Español</button>
+  </div>
+</section>
+
+<!-- ─── SCREEN: SURVEY ────────────────────────────────── -->
+<section id="screenSurvey" class="screen">
+  <div class="survey-header">
+    <div class="progress-meta">
+      <span class="progress-label" id="progressLabel">Question 1 of 8</span>
+      <span class="progress-label" id="progressPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+  <div class="question-body" id="questionBody"></div>
+  <div class="nav-footer">
+    <button id="btnBack" class="btn-back" onclick="goBack()" style="display:none">Back</button>
+    <button id="btnNext" class="btn-next" onclick="goNext()">Next</button>
+  </div>
+</section>
+
+<!-- ─── SCREEN: SUCCESS ───────────────────────────────── -->
+<section id="screenSuccess" class="screen">
+  <div class="hero">
+    <img src="images/kgfs_logo.png" alt="KG Facility Solutions" class="hero__logo">
+  </div>
+  <div class="success-body">
+    <div class="success-icon">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+        <path d="M7 19L15 27L31 11" stroke="#2ABFBF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2 class="success-title" id="successTitle">Thank You!</h2>
+    <p class="success-msg" id="successMsg">Your feedback has been received. We appreciate your honesty and your time with KGFS.</p>
+  </div>
+</section>
+
+<script>
+'use strict';
+
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://aaovrsqcljtlmjdfaidm.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFhb3Zyc3FjbGp0bG1qZGZhaWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDYwNDQsImV4cCI6MjA5MzAyMjA0NH0.YCd6Pe2jv36dvnRijmr6OT-qbCLa5pEHljiqvLtFfLk';
+const TABLE = 'kg_survey_responses';
+const TOTAL_Q = 8;
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let lang = 'en';
+let currentQ = 0;
+let q6Touched = false;
+
+const answers = {
+  language: 'en',
+  q1_general_experience: null,
+  q1_comment: '',
+  q2_corporate_response: null,
+  q2_comment: '',
+  q3_training_score: null,
+  q3_comment: '',
+  q4_info_access: null,
+  q4_comment: '',
+  q5_improvement_areas: [],
+  q5_comment: '',
+  q6_needed_support: null,
+  q6_comment: '',
+  q7_platform_usage: '',
+  q8_leadership_advice: ''
+};
+
+// ── CONTENT ───────────────────────────────────────────────────────────────────
+const C = {
+  en: {
+    back: 'Back',
+    next: 'Next',
+    submit: 'Submit',
+    submitting: 'Submitting...',
+    required: 'Please answer this question before continuing.',
+    progressOf: (q, t) => `Question ${q} of ${t}`,
+    successTitle: 'Thank You!',
+    successMsg: 'Your feedback has been received. We appreciate your honesty and your time with KGFS.',
+    questions: [
+      { // 0 — Q1
+        type: 'scale',
+        text: 'How would you rate your overall experience working with KG Facility Solutions?',
+        scale: '1 = Very Poor  ·  10 = Excellent',
+        scoreKey: 'q1_general_experience',
+        commentKey: 'q1_comment',
+        commentLabel: 'Optional comment'
+      },
+      { // 1 — Q2
+        type: 'scale',
+        text: 'How would you rate the communication and response from the KGFS corporate team, including the Operations Manager and the office?',
+        scoreKey: 'q2_corporate_response',
+        commentKey: 'q2_comment',
+        commentLabel: 'Optional comment'
+      },
+      { // 2 — Q3
+        type: 'scale',
+        text: 'On a scale of 1 to 10, how would you rate the training you received regarding cleaning processes, equipment, and chemicals?',
+        scoreKey: 'q3_training_score',
+        commentKey: 'q3_comment',
+        commentLabel: 'What could have been improved in your training?'
+      },
+      { // 3 — Q4
+        type: 'scale',
+        text: 'How easy was it to access the information you needed to do your job well — procedures, checklists, instructions?',
+        scale: '1 = Very Difficult  ·  10 = Very Easy',
+        scoreKey: 'q4_info_access',
+        commentKey: 'q4_comment',
+        commentLabel: 'Optional comment'
+      },
+      { // 4 — Q5
+        type: 'checkbox',
+        text: 'Which areas do you think KGFS could improve to better support its team? (select all that apply)',
+        options: ['Training', 'Communication', 'Resources & Tools', 'Recognition', 'Clear Processes', 'Other'],
+        areasKey: 'q5_improvement_areas',
+        commentKey: 'q5_comment',
+        commentLabel: 'Optional comment'
+      },
+      { // 5 — Q6
+        type: 'option',
+        text: "Was there ever a moment during your time with KGFS when you needed more support or information and couldn't find it easily?",
+        buttons: ['Yes', 'No', 'Maybe'],
+        qKey: 'q6',
+        commentKey: 'q6_comment',
+        commentLabel: 'Optional comment'
+      },
+      { // 6 — Q7
+        type: 'option',
+        text: 'If KGFS had a training platform where you could access videos, guides, and procedures from your phone — would you use it?',
+        buttons: ['Yes', 'No', 'Maybe'],
+        qKey: 'q7'
+      },
+      { // 7 — Q8
+        type: 'textarea',
+        text: 'If you could give one piece of advice to the KGFS leadership team to improve the employee experience, what would it be?',
+        textKey: 'q8_leadership_advice',
+        placeholder: 'Share your advice here...'
+      }
+    ]
+  },
+  es: {
+    back: 'Atrás',
+    next: 'Siguiente',
+    submit: 'Enviar',
+    submitting: 'Enviando...',
+    required: 'Por favor responde esta pregunta antes de continuar.',
+    progressOf: (q, t) => `Pregunta ${q} de ${t}`,
+    successTitle: '¡Gracias!',
+    successMsg: 'Tu opinión ha sido recibida. Apreciamos tu honestidad y tu tiempo en KGFS.',
+    questions: [
+      { // 0 — Q1
+        type: 'scale',
+        text: '¿Cómo calificarías tu experiencia general trabajando con KG Facility Solutions desde el principio?',
+        scale: '1 = Muy Malo  ·  10 = Excelente',
+        scoreKey: 'q1_general_experience',
+        commentKey: 'q1_comment',
+        commentLabel: 'Comentario opcional'
+      },
+      { // 1 — Q2
+        type: 'scale',
+        text: '¿Cómo calificarías la comunicación y respuesta del equipo corporativo de KGFS, incluyendo el Operations Manager y la oficina?',
+        scoreKey: 'q2_corporate_response',
+        commentKey: 'q2_comment',
+        commentLabel: 'Comentario opcional'
+      },
+      { // 2 — Q3
+        type: 'scale',
+        text: 'Del 1 al 10, ¿cómo calificarías el entrenamiento que recibiste en cuanto a procesos de limpieza, equipo y químicos?',
+        scoreKey: 'q3_training_score',
+        commentKey: 'q3_comment',
+        commentLabel: '¿Qué se podría haber mejorado en tu entrenamiento?'
+      },
+      { // 3 — Q4
+        type: 'scale',
+        text: '¿Qué tan fácil fue acceder a la información que necesitabas para hacer bien tu trabajo — procedimientos, listas de verificación, instrucciones?',
+        scale: '1 = Muy Difícil  ·  10 = Muy Fácil',
+        scoreKey: 'q4_info_access',
+        commentKey: 'q4_comment',
+        commentLabel: 'Comentario opcional'
+      },
+      { // 4 — Q5
+        type: 'checkbox',
+        text: '¿Qué áreas crees que KGFS podría mejorar para apoyar mejor a su equipo? (selecciona todas las que apliquen)',
+        options: ['Entrenamiento', 'Comunicación', 'Recursos y Herramientas', 'Reconocimiento', 'Procesos Claros', 'Otro'],
+        areasKey: 'q5_improvement_areas',
+        commentKey: 'q5_comment',
+        commentLabel: 'Comentario opcional'
+      },
+      { // 5 — Q6
+        type: 'option',
+        text: '¿Hubo algún momento durante tu tiempo en KGFS en el que necesitaste más apoyo o información y no lo encontraste fácilmente?',
+        buttons: ['Sí', 'No', 'Tal vez'],
+        qKey: 'q6',
+        commentKey: 'q6_comment',
+        commentLabel: 'Comentario opcional'
+      },
+      { // 6 — Q7
+        type: 'option',
+        text: 'Si KGFS tuviera una plataforma de capacitación donde pudieras acceder a videos, guías y procedimientos desde tu teléfono, ¿la usarías?',
+        buttons: ['Sí', 'No', 'Tal vez'],
+        qKey: 'q7'
+      },
+      { // 7 — Q8
+        type: 'textarea',
+        text: 'Si pudieras darle un consejo al equipo de liderazgo de KGFS para mejorar la experiencia de los empleados, ¿cuál sería?',
+        textKey: 'q8_leadership_advice',
+        placeholder: 'Comparte tu consejo aquí...'
+      }
+    ]
+  }
+};
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function tr() { return C[lang]; }
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function mk(tag, cls) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  return e;
+}
+function hideError() {
+  const e = document.getElementById('qError');
+  if (e) e.classList.remove('visible');
+}
+
+// ── LANGUAGE ──────────────────────────────────────────────────────────────────
+function selectLanguage(l) {
+  lang = l;
+  answers.language = l;
+  currentQ = 0;
+  q6Touched = false;
+  answers.q5_improvement_areas = [];
+  document.getElementById('loadingText').textContent = tr().submitting;
+  showScreen('screenSurvey');
+  renderQuestion();
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+function updateProgress() {
+  const pct = Math.round((currentQ / TOTAL_Q) * 100);
+  document.getElementById('progressLabel').textContent = tr().progressOf(currentQ + 1, TOTAL_Q);
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderQuestion() {
+  updateProgress();
+  const t = tr();
+  const qData = t.questions[currentQ];
+  const body = document.getElementById('questionBody');
+  body.innerHTML = '';
+
+  document.getElementById('btnBack').style.display = currentQ > 0 ? 'block' : 'none';
+  document.getElementById('btnBack').textContent = t.back;
+  document.getElementById('btnNext').textContent = currentQ === TOTAL_Q - 1 ? t.submit : t.next;
+
+  if (qData.type === 'scale')    renderScale(body, qData);
+  if (qData.type === 'checkbox') renderCheckbox(body, qData);
+  if (qData.type === 'option')   renderOption(body, qData);
+  if (qData.type === 'textarea') renderTextarea(body, qData);
+
+  window.scrollTo(0, 0);
+}
+
+function addQuestionText(parent, text) {
+  const p = mk('p', 'question-text');
+  p.textContent = text;
+  parent.appendChild(p);
+}
+
+function addError(parent) {
+  const e = mk('p', 'error-msg');
+  e.id = 'qError';
+  e.textContent = tr().required;
+  parent.appendChild(e);
+}
+
+function addComment(parent, commentKey, label) {
+  const lbl = mk('p', 'field-label');
+  lbl.textContent = label;
+  parent.appendChild(lbl);
+  const ta = mk('textarea', 'comment-field');
+  ta.placeholder = label;
+  ta.value = answers[commentKey] || '';
+  ta.addEventListener('input', () => { answers[commentKey] = ta.value; });
+  parent.appendChild(ta);
+}
+
+function renderScale(parent, qData) {
+  addQuestionText(parent, qData.text);
+
+  if (qData.scale) {
+    const d = mk('p', 'scale-descriptor');
+    d.textContent = qData.scale;
+    parent.appendChild(d);
+  }
+
+  const row1 = mk('div', 'scale-row');
+  const row2 = mk('div', 'scale-row');
+  for (let i = 1; i <= 10; i++) {
+    const btn = mk('button', 'scale-btn');
+    btn.textContent = i;
+    if (answers[qData.scoreKey] === i) btn.classList.add('selected');
+    btn.addEventListener('click', () => {
+      answers[qData.scoreKey] = i;
+      parent.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      hideError();
+    });
+    (i <= 5 ? row1 : row2).appendChild(btn);
+  }
+  parent.appendChild(row1);
+  parent.appendChild(row2);
+  addError(parent);
+  addComment(parent, qData.commentKey, qData.commentLabel);
+}
+
+function renderCheckbox(parent, qData) {
+  addQuestionText(parent, qData.text);
+
+  const list = mk('div', 'checkbox-list');
+  qData.options.forEach(opt => {
+    const row = mk('div', 'checkbox-row');
+    if (answers[qData.areasKey].includes(opt)) row.classList.add('checked');
+
+    const box = mk('div', 'checkbox-box');
+    box.innerHTML = `<svg class="check-icon" width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M2.5 6.5L5.5 9.5L10.5 3.5" stroke="#0d0d0d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+
+    const label = mk('span', 'checkbox-text');
+    label.textContent = opt;
+
+    row.appendChild(box);
+    row.appendChild(label);
+    row.addEventListener('click', () => {
+      const idx = answers[qData.areasKey].indexOf(opt);
+      if (idx === -1) { answers[qData.areasKey].push(opt); row.classList.add('checked'); }
+      else            { answers[qData.areasKey].splice(idx, 1); row.classList.remove('checked'); }
+    });
+    list.appendChild(row);
+  });
+  parent.appendChild(list);
+  addComment(parent, qData.commentKey, qData.commentLabel);
+}
+
+function renderOption(parent, qData) {
+  addQuestionText(parent, qData.text);
+
+  const list = mk('div', 'option-list');
+
+  // Values for each button index
+  const q6Vals = [true, false, null];
+  const q7Vals = ['yes', 'no', 'maybe'];
+
+  qData.buttons.forEach((label, idx) => {
+    const btn = mk('button', 'option-btn');
+    btn.textContent = label;
+
+    // Restore selected state when going back
+    if (qData.qKey === 'q6' && q6Touched) {
+      if (answers.q6_needed_support === q6Vals[idx]) btn.classList.add('selected');
+    } else if (qData.qKey === 'q7') {
+      if (answers.q7_platform_usage === q7Vals[idx]) btn.classList.add('selected');
+    }
+
+    btn.addEventListener('click', () => {
+      parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      if (qData.qKey === 'q6') {
+        answers.q6_needed_support = q6Vals[idx];
+        q6Touched = true;
+      } else {
+        answers.q7_platform_usage = q7Vals[idx];
+      }
+      hideError();
+    });
+    list.appendChild(btn);
+  });
+  parent.appendChild(list);
+  addError(parent);
+
+  if (qData.commentKey) {
+    addComment(parent, qData.commentKey, qData.commentLabel);
+  }
+}
+
+function renderTextarea(parent, qData) {
+  addQuestionText(parent, qData.text);
+  const ta = mk('textarea', 'comment-field textarea-lg');
+  ta.placeholder = qData.placeholder;
+  ta.value = answers[qData.textKey] || '';
+  ta.addEventListener('input', () => { answers[qData.textKey] = ta.value; });
+  parent.appendChild(ta);
+}
+
+// ── VALIDATION ────────────────────────────────────────────────────────────────
+function validate() {
+  let ok = true;
+  switch (currentQ) {
+    case 0: if (!answers.q1_general_experience) ok = false; break;
+    case 1: if (!answers.q2_corporate_response) ok = false; break;
+    case 2: if (!answers.q3_training_score)     ok = false; break;
+    case 3: if (!answers.q4_info_access)        ok = false; break;
+    case 5: if (!q6Touched)                     ok = false; break;
+    case 6: if (!answers.q7_platform_usage)     ok = false; break;
+  }
+  if (!ok) {
+    const e = document.getElementById('qError');
+    if (e) e.classList.add('visible');
+  }
+  return ok;
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function goNext() {
+  if (!validate()) return;
+  if (currentQ < TOTAL_Q - 1) { currentQ++; renderQuestion(); }
+  else                         { submitSurvey(); }
+}
+
+function goBack() {
+  if (currentQ > 0) { currentQ--; renderQuestion(); }
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────────
+async function submitSurvey() {
+  document.getElementById('loadingOverlay').classList.add('visible');
+
+  const payload = {
+    language:               answers.language,
+    q1_general_experience:  answers.q1_general_experience,
+    q1_comment:             answers.q1_comment  || null,
+    q2_corporate_response:  answers.q2_corporate_response,
+    q2_comment:             answers.q2_comment  || null,
+    q3_training_score:      answers.q3_training_score,
+    q3_comment:             answers.q3_comment  || null,
+    q4_info_access:         answers.q4_info_access,
+    q4_comment:             answers.q4_comment  || null,
+    q5_improvement_areas:   answers.q5_improvement_areas.length ? answers.q5_improvement_areas : null,
+    q5_comment:             answers.q5_comment  || null,
+    q6_needed_support:      q6Touched ? answers.q6_needed_support : null,
+    q6_comment:             answers.q6_comment  || null,
+    q7_platform_usage:      answers.q7_platform_usage || null,
+    q8_leadership_advice:   answers.q8_leadership_advice || null,
+    submitted_at:           new Date().toISOString()
+  };
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    document.getElementById('loadingOverlay').classList.remove('visible');
+
+    if (res.ok) {
+      const t = tr();
+      document.getElementById('successTitle').textContent = t.successTitle;
+      document.getElementById('successMsg').textContent   = t.successMsg;
+      showScreen('screenSuccess');
+    } else {
+      const body = await res.text().catch(() => '');
+      alert(`Submission failed (${res.status}). Please try again.\n\n${body}`);
+    }
+  } catch (err) {
+    document.getElementById('loadingOverlay').classList.remove('visible');
+    alert('Network error. Please check your connection and try again.');
+  }
+}
+</script>
+</body>
+</html>
